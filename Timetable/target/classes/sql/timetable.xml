@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://www.mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="timetable">
+
+	<!-- 강의 목록 -->	
+	<select id="selectCourse" resultType="map" parameterType="map">
+		SELECT CODE, LECTURE, PROFESSOR, LOCATION, START_TIME, END_TIME, DAYOFWEEK
+		FROM COURSE
+	</select>
+	
+<!--게시판 글쓰기  --> 
+<!-- 	<insert id="insert" parameterType="map"> -->
+<!-- 		INSERT INTO ARTICLE (NO, TITLE, CONTENT, HIT, WRITER, WRITE_DATE) -->
+<!-- 		VALUES (NULL, #{title}, #{content}, 0, #{writer}, NOW()) -->
+<!-- 	</insert> -->
+
+	
+	<!--게시판 글 수정하기 --> 
+<!-- 	<update id="updateArticle" parameterType="map"> -->
+<!-- 		UPDATE ARTICLE SET -->
+<!-- 		TITLE = #{title}, -->
+<!-- 		CONTENT = #{content}, -->
+<!-- 		WRITE_DATE = NOW() -->
+<!-- 		WHERE NO = #{no} AND WRITER = #{writer} -->
+<!-- 	</update> -->
+	
+ 	<!--게시판 읽어오기 --> 
+<!-- 	<select id="selectById" resultType="map" parameterType="_int"> -->
+<!-- 		SELECT NO, TITLE, CONTENT, HIT, WRITER, WRITE_DATE -->
+<!-- 		FROM `ARTICLE` -->
+<!-- 		WHERE NO=#{value} -->
+<!-- 	</select> -->
+	
+<!--게시글 삭제하기  --> 
+<!-- 	<delete id="deleteArticle" parameterType="map"> -->
+<!-- 		DELETE FROM `ARTICLE` WHERE NO = #{no} -->
+<!-- 	</delete> -->
+	
+
+</mapper>
