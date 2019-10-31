@@ -34,7 +34,7 @@
 						<ul class="list-lecture-info">
 							<li>교과목 코드 : ${item.CODE}</li>
 							<li>담당 교수 : ${item.PROFESSOR}</li>
-							<li>강의실 : ${item.LOCATION}</li>							
+							<li>강의실 : ${item.PLACE}</li>							
 						</ul></li>
 				</c:forEach>
 			</ul>
@@ -86,20 +86,20 @@
 									<h4 class="day">Mon</h4>
 								</div>
 								<ul>
-									<li class="lecture-time two-hr hr-11" data-event="lecture-01">
-										<a href="#">
-											<div class="lecture-info">
-												<h6 class="lecture-title">웹 프로그래밍</h6>
-												<h6 class="lecture-location">공학관 204</h6>
-											</div>
-											<div class="lecture-noti" data-toggle="tooltip"
-												data-placement="top" title=""
-												data-original-title="과제 설명 텍스트 과제 설명 텍스트 과제 설명 텍스트">
-												<i class="material-icons ic-lecture-noti">assignment</i> <span
-													class="lecture-noti-title">과제 제목 텍스트</span>
-											</div>
-									</a>
-									</li>
+<!-- 									<li class="lecture-time two-hr hr-11" data-event="lecture-01"> -->
+<!-- 										<a href="#"> -->
+<!-- 											<div class="lecture-info"> -->
+<!-- 												<h6 class="lecture-title">웹 프로그래밍</h6> -->
+<!-- 												<h6 class="lecture-location">공학관 204</h6> -->
+<!-- 											</div> -->
+<!-- 											<div class="lecture-noti" data-toggle="tooltip" -->
+<!-- 												data-placement="top" title="" -->
+<!-- 												data-original-title="과제 설명 텍스트 과제 설명 텍스트 과제 설명 텍스트"> -->
+<!-- 												<i class="material-icons ic-lecture-noti">assignment</i> <span -->
+<!-- 													class="lecture-noti-title">과제 제목 텍스트</span> -->
+<!-- 											</div> -->
+<!-- 									</a> -->
+<!-- 									</li> -->
 									<!-- 								
 
 <!-- 									<li class="lecture-time hr-16" data-event="lecture-03"><a -->
@@ -220,17 +220,17 @@
 					<div class="lecture-memo">
 						<h5 class="memo-header">메모</h5>
 						<ul>
-							<li class="memo-list">
-								<div class="memo-content" data-toggle="tooltip"
-									data-placement="top" title=""
-									data-original-title="과제 설명 텍스트 과제 설명 텍스트 과제 설명 텍스트">
-									<i class="material-icons ic-lecture-noti">assignment</i> 
-									<span class="lecture-noti-title">과제 제목 텍스트</span>
-								</div>
-								<div class="memo-btn">
-									<a href=""><i class="material-icons ic-lecture-noti">delete</i></a>
-								</div>
-							</li>
+<!-- 							<li class="memo-list"> -->
+<!-- 								<div class="memo-content" data-toggle="tooltip" -->
+<!-- 									data-placement="top" title="" -->
+<!-- 									data-original-title="과제 설명 텍스트 과제 설명 텍스트 과제 설명 텍스트"> -->
+<!-- 									<i class="material-icons ic-lecture-noti">assignment</i>  -->
+<!-- 									<span class="lecture-noti-title">과제 제목 텍스트</span> -->
+<!-- 								</div> -->
+<!-- 								<div class="memo-btn"> -->
+<!-- 									<a href=""><i class="material-icons ic-lecture-noti">delete</i></a> -->
+<!-- 								</div> -->
+<!-- 							</li> -->
 						</ul>
 					</div>
 				</div>

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://www.mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="timetable">
+
+	<!-- 강의 목록 불러오기 -->	
+	<select id="selectCourse" resultType="map" parameterType="map">
+		SELECT CODE, LECTURE, PROFESSOR, LOCATION, START_TIME, END_TIME, DAYOFWEEK
+		FROM COURSE
+	</select>
+	
+	<!-- 메모등록하기 -->
+	<insert id="insert_memo" parameterType="map">
+		INSERT INTO MEMO (LECTURE, TITLE, CONTENT)
+		VALUES (#{lecture} , #{title}, #{content})
+	</insert>
+	
+	<!-- 메모 불러오기 -->
+	<select id="selectMemo" resultType="map" parameterType="String">
+		SELECT LECTURE,TITLE, CONTENT
+		FROM MEMO
+		WHERE LECTURE = #{lecture}
+	</select>
+
+</mapper>

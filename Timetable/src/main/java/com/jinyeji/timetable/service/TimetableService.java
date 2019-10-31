@@ -14,8 +14,29 @@ public class TimetableService {
 	@Autowired
 	TimetableDao timetableDao;
 	
+	//강의 목록 불러오기
 	public List<Map<String, Object>> selectCourse(){
 		return timetableDao.selectCourse();
+	}
+	
+	//메모 작성하기
+	public void insert_memo(Map<String, Object> map) {
+		int result = timetableDao.insert_memo(map);
+	}
+	
+	//메모 불러오기
+	public List<Map<String, Object>> selectMemo(String lecture){
+		return timetableDao.selectMemo(lecture);
+	}
+	
+	//메모 불러오기
+	public List<Map<String, Object>> selectTotal(String lecture){
+		return timetableDao.selectTotal(lecture);
+	}
+	
+	//메모 삭제하기
+	public void deleteMemo(Map<String, Object> map) {
+		timetableDao.deleteMemo(map);
 	}
 
 }
