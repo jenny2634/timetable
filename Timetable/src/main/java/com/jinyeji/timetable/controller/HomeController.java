@@ -29,7 +29,6 @@ public class HomeController {
 		//logger.info("Welcome home! The client locale is {}.", locale);
 		
 		List<Map<String, Object>> courses = timetableService.selectCourse();
-		//System.out.println(courses);
 		model.addAttribute("courses",courses);
 		
 		return "home";
@@ -41,7 +40,7 @@ public class HomeController {
 	public String register_memo(Model model
 			, @RequestParam Map<String,Object> map) {
 		
-		System.out.println(map);
+		//System.out.println(map);
 		timetableService.insert_memo(map);
 		
 		return "success";
@@ -51,10 +50,9 @@ public class HomeController {
 	@RequestMapping(value="/show_memo")
 	@ResponseBody
 	public List<Map<String, Object>> show_memo(@RequestParam String lecture) {
-		
-
+		//System.out.println(lecture);
 		List<Map<String, Object>> memos = timetableService.selectMemo(lecture);
-		System.out.println(memos);
+		//System.out.println(memos);
 		
 		return memos;
 	}
@@ -65,9 +63,20 @@ public class HomeController {
 	public List<Map<String, Object>> show_pop(@RequestParam String lecture) {
 		
 		List<Map<String, Object>> total = timetableService.selectTotal(lecture);
-		System.out.println(total);
+		//System.out.println(total);
 		
 		return total;
+		
+	}
+	
+	//메모 삭제하기 
+	@RequestMapping(value="/delete_memo")
+	@ResponseBody
+	public String delete_memo(@RequestParam Map<String,Object> map) {
+		
+		//System.out.println(map);
+		timetableService.deleteMemo(map);
+		return "success";
 		
 	}
 	

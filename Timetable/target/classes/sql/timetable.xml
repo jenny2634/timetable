@@ -17,9 +17,9 @@
 	
 	<!-- 메모 불러오기 -->
 	<select id="selectMemo" resultType="map" parameterType="String">
-		SELECT LECTURE,TITLE, CONTENT
+		SELECT LECTURE,TITLE,CONTENT
 		FROM MEMO
-		WHERE LECTURE = #{lecture}
+		WHERE LECTURE = #{value}
 	</select>
 	
 	<!-- 전체 정보 불러오기 -->

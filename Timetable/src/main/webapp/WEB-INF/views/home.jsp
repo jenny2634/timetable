@@ -42,18 +42,6 @@
 
 		<section class="section-list">
 			<div class="container-xl">
-				<header class="header-timetable-info">
-					<h3>2019년 11월</h3>
-					<div class="btn-group" role="group">
-						<button type="button" class="btn btn-light btn-previous">
-							<i class="material-icons ic-previous">chevron_left</i>
-						</button>
-						<button type="button" class="btn btn-light btn-today">오늘</button>
-						<button type="button" class="btn btn-light btn-next">
-							<i class="material-icons ic-next">chevron_right</i>
-						</button>
-					</div>
-				</header>
 				<div class="table-schedule">
 					<div class="timeline">
 						<ul>

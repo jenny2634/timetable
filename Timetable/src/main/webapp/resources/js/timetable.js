@@ -46,9 +46,11 @@ function alertContents() { // ajax 통신 후 callback 처리
 function getMemo() { // ajax 통신 후 callback 처리
 	if (httpRequest.readyState === XMLHttpRequest.DONE) {
 		if (httpRequest.status === 200) {
-		    var memo_list = JSON.parse(httpRequest.responseText);
-		     
+		    
+			var memo_list = JSON.parse(httpRequest.responseText);
+		    
 			  count_lecture++;
+			  
 			  var html='';
 			  html += '<li class="lecture-time';
 			  	if(hour == 2) html += ' two-hr';
@@ -108,8 +110,7 @@ var lecture, place, time, start_time, end_time, hour, dayofweek, day, day2;
 $('.btn.btn-primary').click(function(){
 	
 	  lecture = $(this).parents('div').find('.lecture-title').text();
-	  place = $(this).parents('div').find('.lecture-code:last > span').text().substring(6);  
-	  
+	  place = $(this).parents('div').find('.lecture-code:last > span').text().substring(6);   
 	  time = $(this).parents('div').find('.lecture-time > span').text().replace(/\s/gi,"");
 	  start_time = time.substring(5,7);
 	  end_time = time.substring(11,13);
@@ -150,11 +151,11 @@ $('.btn.btn-primary').click(function(){
 	  
 	  var hasCheck = -1;	  
 	  if(day2 != ""){//수업이 일주일에 2번이면
-		  if(check_Lecture[day_num][start_num] == null){//1번째 시간표
+		  if(check_Lecture[day_num][start_num] != 1){//1번째 시간표
 			  if(hour == 2){//2시간 수업일때
-				  if(check_Lecture[day_num][start_num+1] == null){//겹치는게 없으면
-					  if(check_Lecture[day_num2][start_num] == null){//2번째 시간표
-						  if(check_Lecture[day_num2][start_num+1] == null){//겹치는게 없으면
+				  if(check_Lecture[day_num][start_num+1] != 1){//겹치는게 없으면
+					  if(check_Lecture[day_num2][start_num] != 1){//2번째 시간표
+						  if(check_Lecture[day_num2][start_num+1] != 1){//겹치는게 없으면
 							  hasCheck = 1;
 							  check_Lecture[day_num][start_num] = 1;
 							  check_Lecture[day_num][start_num+1] = 1;
@@ -164,7 +165,7 @@ $('.btn.btn-primary').click(function(){
 					  }
 				  }
 			  }else{//수업 1시간일때
-				  if(check_Lecture[day_num2][start_num] == null){//2번째 시간표 겹치는게 없으면
+				  if(check_Lecture[day_num2][start_num] != 1){//2번째 시간표 겹치는게 없으면
 					  hasCheck = 1;
 					  check_Lecture[day_num][start_num] = 1;
 					  check_Lecture[day_num2][start_num] = 1;		
@@ -173,9 +174,9 @@ $('.btn.btn-primary').click(function(){
 		  } 
 	  }
 	  else{//수업이 일주일에 1번이면
-		  if(check_Lecture[day_num][start_num] == null){
+		  if(check_Lecture[day_num][start_num] != 1){
 			  if(hour == 2){ //2시간 일때
-				  if(check_Lecture[day_num][start_num+1] == null){//겹치는게 없으면
+				  if(check_Lecture[day_num][start_num+1] != 1){//겹치는게 없으면
 					  hasCheck = 1;
 					  check_Lecture[day_num][start_num] = 1;
 					  check_Lecture[day_num][start_num+1] = 1;
@@ -197,6 +198,7 @@ $('.btn.btn-primary').click(function(){
 		  httpRequest.open('get', 'show_memo' + param, true);
 		  httpRequest.send();
 	  }
+	  
 	 $('#modal-lecture-info').modal("hide");
 });
 
@@ -206,7 +208,7 @@ function getTotal() { // ajax 통신 후 callback 처리
 	if (httpRequest.readyState === XMLHttpRequest.DONE) {
 		if (httpRequest.status === 200) {
 			// 정상 처리 후 (ajax -> success 함수와 같은 부분)
-			//console.log(httpRequest.responseText);
+			console.log(httpRequest.responseText);
 			
 			var total_list = JSON.parse(httpRequest.responseText);
 			var start_time = total_list[0].START_TIME;
@@ -250,7 +252,7 @@ function getTotal() { // ajax 통신 후 callback 처리
 					html_total +=' <i class="material-icons ic-lecture-noti">assignment</i>';
 					html_total +=' <span class="lecture-noti-title">'+total.TITLE+'</span>';
 					html_total +=' </div><div class="memo-btn">';
-					html_total +=' <a href="#" onclick="delete_memo('+total.LECTURE+','+total.TITLE+','+total.CONTENT+')"><i class="material-icons ic-lecture-noti">delete</i></a></div></li>';		    	  
+					html_total +=' <a href="#" onclick="delete_memo(\''+total.LECTURE+'\',\''+total.TITLE+'\',\''+total.CONTENT+'\')"><i class="material-icons ic-lecture-noti">delete</i></a></div></li>';		    	  
 				}
 		    }
 			
@@ -263,15 +265,30 @@ function getTotal() { // ajax 통신 후 callback 처리
 	}
 }
 
+//메모 삭제 
+function remove_memo() { // ajax 통신 후 callback 처리
+	if (httpRequest.readyState === XMLHttpRequest.DONE) {
+		if (httpRequest.status === 200) {
+			// 정상 처리 후 (ajax -> success 함수와 같은 부분)
+			console.log(httpRequest.responseText);
+		} else {
+			console.log('There was a problem with the request.');
+		}
+	}
+}
+
+//메모 삭제 값 넘기 
 function delete_memo(lec,tit,con){
 	var lecture = lec;
 	var title = tit;
 	var content = con;
 	console.log("delete");
-	console.log(lec);
-	console.log(tit);
-	console.log(con);
 	
+	var param = `?lecture=${lecture}&title=${title}&content=${content}`; ; 
+		
+	 httpRequest.onreadystatechange = remove_memo; // 통신 후 처리할 callback 함수 지정
+	 httpRequest.open('get', 'delete_memo' + param, true);
+	 httpRequest.send();
 }
 
 //시간표에서 강의클릭시 팝업
@@ -282,7 +299,7 @@ $(document).on('click', '.lecture-time > a', function () {
   $('#modal-lecture-task').find('.lecture-code > span:last').text("강의실 : " + place);
  
   
-  var param = `?lecture=${lecture}`; 
+  var param = `?lecture=${lecture}`;  
 	
   httpRequest.onreadystatechange = getTotal; // 통신 후 처리할 callback 함수 지정
   httpRequest.open('get', 'show_pop' + param, true);
@@ -308,6 +325,97 @@ $(document).on('click', '.btn.btn-primary.btn-save', function () {
     $('[data-toggle="popover"]').popover('hide');
 	return false;
 	
+});
+
+//과목 삭제
+$(document).on('click', '.btn.btn-danger', function () {
+	
+	var lecture = $('#modal-lecture-task').find('.lecture-title').text();
+	var time = $('#modal-lecture-task').find('.lecture-time > span').text();
+	var start_time = time.substring(8,10);
+	var end_time = time.substring(16,18);
+	var hour = end_time - start_time;
+	var dayofweek = time.substring(25);
+	var day1 = dayofweek.substring(0,1);
+	var day_num = -1;
+	var day_num2= -1;
+	var start_num = -1;
+	
+	var day_html="timeline-vertical";
+	if(day1 == "월"){
+		day_num = 0;
+		day_html += ':first'
+	}
+	else if(day1 == "화"){
+		day_num = 1;
+		day_html += ':eq(1)'
+	}
+	else if(day1 == "수"){
+		day_num = 2;
+		day_html += ':eq(2)'
+	}
+	else if(day1 == "목"){
+		day_num = 3;
+		day_html += ':eq(3)'
+	}
+	else if(day1 == "금"){
+		day_num = 4;
+		day_html += ':eq(4)'
+	}
+	
+	var day2_html="timeline-vertical";
+	if(dayofweek.length > 2){
+		var day2 = dayofweek.substring(5,6);
+		if(day2 == "월"){
+			day_num2 = 0;
+			day2_html += ':first'
+		}
+		else if(day2 == "화"){
+			day_num2 = 1;
+			day2_html += ':eq(1)'
+		}
+		else if(day2 == "수"){
+			day_num2 = 2;
+			day2_html += ':eq(2)'
+		}
+		else if(day2 == "목"){
+			day_num2 = 3;
+			day2_html += ':eq(3)'
+		}
+		else if(day2 == "금"){
+			day_num2 = 4;
+			day2_html += ':eq(4)'
+		}
+	}
+	
+	  
+	  if(start_time == "09") start_num = 0;
+	  else if(start_time == "10") start_num = 1;
+	  else if(start_time == "11") start_num = 2;
+	  else if(start_time == "12") start_num = 3;
+	  else if(start_time == "13") start_num = 4;
+	  else if(start_time == "14") start_num = 5;
+	  else if(start_time == "15") start_num = 6;
+	  else if(start_time == "16") start_num = 7;
+	  else if(start_time == "17") start_num = 8;
+
+	var cl_name = 'lecture-time';
+	if(hour == 2) cl_name += '.two-hr';		
+	
+	cl_name += '.hr-'+start_time;
+	
+	$('.'+day_html).find('.'+cl_name).remove();
+	check_Lecture[day_num][start_num] = -1;
+	if(hour == 2) check_Lecture[day_num][start_num+1] = -1;
+	
+	if(day_num2 != -1){
+		$('.'+day2_html).find('.'+cl_name).remove();
+		check_Lecture[day_num2][start_num] = -1;
+		if(hour == 2) check_Lecture[day_num2][start_num+1] = -1;
+	}
+	
+	 $('#modal-lecture-task').modal("hide");
+
 });
 
 
