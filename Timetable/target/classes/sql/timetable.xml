@@ -3,39 +3,46 @@
 "http://www.mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="timetable">
 
-	<!-- 강의 목록 -->	
+	<!-- 강의 목록 불러오기 -->	
 	<select id="selectCourse" resultType="map" parameterType="map">
-		SELECT CODE, LECTURE, PROFESSOR, LOCATION, START_TIME, END_TIME, DAYOFWEEK
+		SELECT CODE, LECTURE, PROFESSOR, PLACE, START_TIME, END_TIME, DAYOFWEEK
 		FROM COURSE
 	</select>
 	
-<!--게시판 글쓰기  --> 
-<!-- 	<insert id="insert" parameterType="map"> -->
-<!-- 		INSERT INTO ARTICLE (NO, TITLE, CONTENT, HIT, WRITER, WRITE_DATE) -->
-<!-- 		VALUES (NULL, #{title}, #{content}, 0, #{writer}, NOW()) -->
-<!-- 	</insert> -->
-
+	<!-- 메모등록하기 -->
+	<insert id="insert_memo" parameterType="map">
+		INSERT INTO MEMO (LECTURE, TITLE, CONTENT)
+		VALUES (#{lecture} , #{title}, #{content})
+	</insert>
 	
-	<!--게시판 글 수정하기 --> 
-<!-- 	<update id="updateArticle" parameterType="map"> -->
-<!-- 		UPDATE ARTICLE SET -->
-<!-- 		TITLE = #{title}, -->
-<!-- 		CONTENT = #{content}, -->
-<!-- 		WRITE_DATE = NOW() -->
-<!-- 		WHERE NO = #{no} AND WRITER = #{writer} -->
-<!-- 	</update> -->
+	<!-- 메모 불러오기 -->
+	<select id="selectMemo" resultType="map" parameterType="String">
+		SELECT LECTURE,TITLE, CONTENT
+		FROM MEMO
+		WHERE LECTURE = #{lecture}
+	</select>
 	
- 	<!--게시판 읽어오기 --> 
-<!-- 	<select id="selectById" resultType="map" parameterType="_int"> -->
-<!-- 		SELECT NO, TITLE, CONTENT, HIT, WRITER, WRITE_DATE -->
-<!-- 		FROM `ARTICLE` -->
-<!-- 		WHERE NO=#{value} -->
-<!-- 	</select> -->
+	<!-- 전체 정보 불러오기 -->
+	<select id="selectTotal" resultType="map" parameterType="String">
+		SELECT c.CODE, c.LECTURE, c.PROFESSOR, c.START_TIME, c.END_TIME, c.DAYOFWEEK
+		     , m.LECTURE, m.TITLE, m.CONTENT
+		FROM COURSE c
+		LEFT JOIN MEMO m
+		   	 ON c.LECTURE = m.LECTURE
+		WHERE c.LECTURE = #{value} 
+	</select>
 	
-<!--게시글 삭제하기  --> 
-<!-- 	<delete id="deleteArticle" parameterType="map"> -->
-<!-- 		DELETE FROM `ARTICLE` WHERE NO = #{no} -->
-<!-- 	</delete> -->
+	<!-- 메모 삭제하기 -->
+	<delete id="deleteMemo" parameterType="map">
+		DELETE FROM MEMO 
+		WHERE LECTURE=#{lecture}
+		AND TITLE = #{title}
+		AND CONTENT = #{content}
+	</delete>
+	
+	
+	
+	
 	
 
 </mapper>
