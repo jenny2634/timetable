@@ -18,6 +18,11 @@ public class TimetableDao {
 		return ss.selectList("timetable.selectCourse");
 	}
 	
+	//검색한 강의 목록 불러오기
+	public List<Map<String, Object>> selectSearch(String search_text){
+		return ss.selectList("timetable.selectSearch",search_text);
+	}
+	
 	//메모 쓰기
 	public int insert_memo(Map<String, Object> map) {
 		return ss.insert("timetable.insert_memo",map);

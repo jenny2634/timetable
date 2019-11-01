@@ -9,6 +9,15 @@
 		FROM COURSE
 	</select>
 	
+	<!-- 검색한 강의 목록 불러오기 -->	
+	<select id="selectSearch" resultType="map" parameterType="String">
+		SELECT CODE, LECTURE, PROFESSOR, PLACE, START_TIME, END_TIME, DAYOFWEEK
+		FROM COURSE
+		WHERE LECTURE LIKE CONCAT('%', #{value}, '%')
+		OR CODE LIKE CONCAT('%', #{value}, '%')
+		OR PROFESSOR LIKE CONCAT('%', #{value}, '%')
+	</select>
+	
 	<!-- 메모등록하기 -->
 	<insert id="insert_memo" parameterType="map">
 		INSERT INTO MEMO (LECTURE, TITLE, CONTENT)
@@ -22,6 +31,14 @@
 		WHERE LECTURE = #{value}
 	</select>
 	
+	<!-- 메모 삭제하기 -->
+	<delete id="deleteMemo" parameterType="map">
+		DELETE FROM MEMO 
+		WHERE LECTURE=#{lecture}
+		AND TITLE = #{title}
+		AND CONTENT = #{content}
+	</delete>
+	
 	<!-- 전체 정보 불러오기 -->
 	<select id="selectTotal" resultType="map" parameterType="String">
 		SELECT c.CODE, c.LECTURE, c.PROFESSOR, c.START_TIME, c.END_TIME, c.DAYOFWEEK
@@ -32,13 +49,6 @@
 		WHERE c.LECTURE = #{value} 
 	</select>
 	
-	<!-- 메모 삭제하기 -->
-	<delete id="deleteMemo" parameterType="map">
-		DELETE FROM MEMO 
-		WHERE LECTURE=#{lecture}
-		AND TITLE = #{title}
-		AND CONTENT = #{content}
-	</delete>
 	
 	
 	

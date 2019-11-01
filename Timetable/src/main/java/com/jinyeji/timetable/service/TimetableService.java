@@ -19,6 +19,11 @@ public class TimetableService {
 		return timetableDao.selectCourse();
 	}
 	
+	//검색한 강의 목록 불러오기
+	public List<Map<String, Object>> selectSearch(String search_text){
+		return timetableDao.selectSearch(search_text);
+	}
+
 	//메모 작성하기
 	public void insert_memo(Map<String, Object> map) {
 		int result = timetableDao.insert_memo(map);

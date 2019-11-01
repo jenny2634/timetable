@@ -80,5 +80,17 @@ public class HomeController {
 		
 	}
 	
+	//검색한 강의 목록 불러오기
+	@RequestMapping(value="/search")
+	@ResponseBody
+	public List<Map<String, Object>> search(@RequestParam String search_text) {
+		
+		//System.out.println(search_text);
+		List<Map<String, Object>> s_list = timetableService.selectSearch(search_text);
+		//System.out.println(s_list);
+		return s_list;
+		
+	}
+	
 	
 }
