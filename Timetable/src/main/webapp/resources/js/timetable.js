@@ -4,6 +4,7 @@ var httpRequest = new XMLHttpRequest(); // ajax 객체
 function getSearch(){
 	if (httpRequest.readyState === XMLHttpRequest.DONE) {
 		if (httpRequest.status === 200) {
+			
 			var search_list = JSON.parse(httpRequest.responseText);
 			var html="";
 		    for(var i = 0; i < search_list.length; i++) {
@@ -623,16 +624,25 @@ $(document).on('click', '.btn.btn-danger', function () {
 });
 
 //엔터 치면 강의검색 버튼 
-function enterkey() {
-    if (window.event.keyCode == 13) {
-    	search();
-	};
+$('#search_text').keydown(function(e) {
+	enterkey(e);
+	if (e.keyCode == 13) {
+		return false;
+	}
+})
+function enterkey(e) {
+	//console.log(e);
+    if (e.keyCode == 13) {
+ 
+    	search(); 
+	}
 }
 
 //강의 검색 버튼 클릭하면
 function search(){
 	
 	var search_text = $('#search_text').val();
+	
 	
 	var param = `?search_text=${search_text}`; 
 

@@ -17,7 +17,7 @@
 		</section>
 		<section class="section-nav">
 			<form id="search-form" class="form-search">
-				<input type="text" id="search_text" placeholder="강의 검색" class="form-control" onkeydown="enterkey()">
+				<input type="text" id="search_text" placeholder="강의 검색" class="form-control">
 				<span><i onclick="search()" class="material-icons ic-search">search</i></span>
 			</form>
 			<ul class="list-lecture">
