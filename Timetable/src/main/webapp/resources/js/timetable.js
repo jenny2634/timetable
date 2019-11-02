@@ -22,7 +22,7 @@ function getSearch(){
 		    	
 		    	html += ' | (' + day1 +')';
 		  	
-		    	if(dayofweek >=2) {
+		    	if(dayofweek.length >=2) {
 		    		var day2 = dayofweek.substring(1,2);
 		    		html += ', (' + day2 +')';
 		    	}
@@ -43,24 +43,58 @@ function getSearch(){
 		}
 	}
 }
-//메모등록 callback 함수
-function alertContents(lecture,title,content) { // ajax 통신 후 callback 처리
+
+//마지막 메모 등록
+function recent_getTotal() { // ajax 통신 후 callback 처리
 	if (httpRequest.readyState === XMLHttpRequest.DONE) {
 		if (httpRequest.status === 200) {
 			// 정상 처리 후 (ajax -> success 함수와 같은 부분)
+			console.log("re getTotal");
+			//console.log(httpRequest.responseText);
+			
+			var lmemo = JSON.parse(httpRequest.responseText);
+			 console.log(lmemo[0]);
+			
 			
 			//팝업창에 메모 보이기
 			var html_total="";
 			html_total +=' <li class="memo-list"> ';
 			html_total +=' <div class="memo-content" data-toggle="tooltip" data-placement="top" ';
-			html_total +=' title="" data-original-title="'+content+'">';
+			html_total +=' title="" data-original-title="'+lmemo[0].CONTENT+'">';
 			html_total +=' <i class="material-icons ic-lecture-noti">assignment</i>';
-			html_total +=' <span class="lecture-noti-title">'+title+'</span>';
+			html_total +=' <span class="lecture-noti-title">'+lmemo[0].TITLE+'</span>';
 			html_total +=' </div><div class="memo-btn">';		    	  
-			html_total +=' <a href="#" onclick="delete_memo(\''+lecture+'\',\''+title+'\',\''+content+'\', this)"><i class="material-icons ic-lecture-noti">delete</i></a></div></li>';	
+			html_total +=' <a href="#" onclick="delete_memo(\''+lmemo[0].LECTURE+'\',\''+lmemo[0].TITLE+'\',\''+lmemo[0].CONTENT+'\',\''+lmemo[0].NO+'\', this)"><i class="material-icons ic-lecture-noti">delete</i></a></div></li>';	
 			
 			$('#modal-lecture-task').find('.lecture-memo > ul').append(html_total);
 			
+			
+		} else {
+			console.log('There was a problem with the request.');
+		}
+		
+	}
+}
+
+//등록한 메모 번호 받아오기
+function memo_num(lec){
+	
+	console.log("memo_num");
+	var lecture = lec;
+	var param = `?lecture=${lecture}`; 
+
+	httpRequest.onreadystatechange = recent_getTotal; // 통신 후 처리할 callback 함수 지정
+    httpRequest.open('get', 'recent_memo' + param);
+    httpRequest.send();
+    
+}
+//메모등록 callback 함수
+function alertContents(lecture,title,content) { // ajax 통신 후 callback 처리
+	if (httpRequest.readyState === XMLHttpRequest.DONE) {
+		if (httpRequest.status === 200) {
+
+			// 정상 처리 후 (ajax -> success 함수와 같은 부분)
+	
 			//시간표에 메모 보이기
 			var time = $('#modal-lecture-task').find('.lecture-time > span').text();
 			var start_time = time.substring(8,10);
@@ -139,7 +173,8 @@ function alertContents(lecture,title,content) { // ajax 통신 후 callback 처�
 		} else {
 			console.log('There was a problem with the request.');
 		}
-		  $('[data-toggle="tooltip"]').tooltip();
+	
+		$('[data-toggle="tooltip"]').tooltip();
 	}
 }
 
@@ -197,13 +232,11 @@ function getMemo() { // ajax 통신 후 callback 처리
 }
 
 
-
 //시간표에 강의클릭시 팝업 보여주기 call-back
 function getTotal() { // ajax 통신 후 callback 처리
 	if (httpRequest.readyState === XMLHttpRequest.DONE) {
 		if (httpRequest.status === 200) {
 			// 정상 처리 후 (ajax -> success 함수와 같은 부분)
-			//console.log(httpRequest.responseText);
 			
 			var total_list = JSON.parse(httpRequest.responseText);
 			var start_time = total_list[0].START_TIME;
@@ -247,7 +280,7 @@ function getTotal() { // ajax 통신 후 callback 처리
 					html_total +=' <i class="material-icons ic-lecture-noti">assignment</i>';
 					html_total +=' <span class="lecture-noti-title">'+total.TITLE+'</span>';
 					html_total +=' </div><div class="memo-btn">';
-					html_total +=' <a href="#" onclick="delete_memo(\''+total.LECTURE+'\',\''+total.TITLE+'\',\''+total.CONTENT+'\', this)"><i class="material-icons ic-lecture-noti">delete</i></a></div></li>';		    	  
+					html_total +=' <a href="#" onclick="delete_memo(\''+total.LECTURE+'\',\''+total.TITLE+'\',\''+total.CONTENT+'\',\''+total.NO+'\',this)"><i class="material-icons ic-lecture-noti">delete</i></a></div></li>';		    	  
 				}
 		    }
 			
@@ -265,9 +298,7 @@ function remove_memo(title, obj) { // ajax 통신 후 callback 처리
 	if (httpRequest.readyState === XMLHttpRequest.DONE) {
 		if (httpRequest.status === 200) {
 			// 정상 처리 후 (ajax -> success 함수와 같은 부분)
-//			var li_html = $('#modal-lecture-task').find('.memo-list:contains('+title+')').html();
-		
-//			$('#modal-lecture-task').find('.memo-list:contains('+title+')').remove();
+
 			var idx = $('li.memo-list a').index(obj);
 			
 			$(obj).parent().parent().remove();
@@ -334,7 +365,7 @@ function remove_memo(title, obj) { // ajax 통신 후 callback 처리
 			cl_name += '.hr-'+start_time;
 			//////////
 	    	$('.'+day_html).find('.'+cl_name +' .lecture-noti:eq(' + idx + ')').remove();
-//	    	$(obj).parent().parent().remove();
+
 	    	if(day_num2 != -1){
 	    		$('.'+day2_html).find('.'+cl_name +' .lecture-noti:eq(' + idx + ')').remove();
 	    	}
@@ -482,18 +513,17 @@ $('.btn.btn-primary').click(function(){
 });
 
 //메모 삭제 값 넘기 
-function delete_memo(lec,tit,con, obj){
+function delete_memo(lec,tit,con,num,obj){
 	var lecture = lec;
 	var title = tit;
 	var content = con;
-	
-	var param = `?lecture=${lecture}&title=${title}&content=${content}`; 
+	var no = num;
+
+	var param = `?lecture=${lecture}&title=${title}&content=${content}&no=${no}`; 
 	
 	 httpRequest.onreadystatechange = remove_memo(title, obj); // 통신 후 처리할 callback 함수 지정
 	 httpRequest.open('get', 'delete_memo' + param, true);
 	 httpRequest.send();
-	 
-	// $('#modal-lecture-task').find('.memo-list:contains('+title+')').remove();
 }
 
 //시간표에서 강의클릭시 팝업
@@ -511,6 +541,7 @@ $(document).on('click', '.lecture-time > a', function () {
   httpRequest.send();
   
   $('#modal-lecture-task').modal('show');
+
 });
 
 
@@ -526,9 +557,11 @@ $(document).on('click', '.btn.btn-primary.btn-save', function () {
 	httpRequest.onreadystatechange = alertContents(lecture,title,content); // 통신 후 처리할 callback 함수 지정
     httpRequest.open('get', 'register_memo' + param);
     httpRequest.send();
+    
 
     $('[data-toggle="popover"]').popover('hide');
-	return false;
+    memo_num(lecture);
+    return true;
 	
 });
 
@@ -643,7 +676,6 @@ function search(){
 	
 	var search_text = $('#search_text').val();
 	
-	
 	var param = `?search_text=${search_text}`; 
 
 	httpRequest.onreadystatechange = getSearch; // 통신 후 처리할 callback 함수 지정
@@ -651,7 +683,7 @@ function search(){
     httpRequest.send();
     
     $('.card-lecture').remove();	
-
+   
 }
 
 

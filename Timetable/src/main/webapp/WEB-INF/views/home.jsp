@@ -18,7 +18,7 @@
 		<section class="section-nav">
 			<form id="search-form" class="form-search">
 				<input type="text" id="search_text" placeholder="강의 검색" class="form-control">
-				<span><i onclick="search()" class="material-icons ic-search">search</i></span>
+				<span><i onclick="search()" class="material-icons ic-search" style="cursor:pointer">search</i></span>
 			</form>
 			<ul class="list-lecture">
 				<c:forEach items="${courses}" var="item" >

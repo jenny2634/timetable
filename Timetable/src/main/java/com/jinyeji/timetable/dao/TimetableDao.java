@@ -33,7 +33,12 @@ public class TimetableDao {
 		return ss.selectList("timetable.selectMemo",lecture);
 	}
 	
-	//메모 불러오기
+	//마지막 메모 불러오기
+	public  List<Map<String, Object>> select_lMemo(Map<String, Object> map){
+		return ss.selectList("timetable.select_lMemo",map);
+	}
+	
+	//메모 전체 불러오기
 	public List<Map<String, Object>> selectTotal(String lecture){
 		return ss.selectList("timetable.selectTotal",lecture);
 	}

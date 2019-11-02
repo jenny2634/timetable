@@ -37,22 +37,30 @@ public class HomeController {
 	//메모 등록하기
 	@RequestMapping(value="/register_memo")
 	@ResponseBody
-	public String register_memo(Model model
-			, @RequestParam Map<String,Object> map) {
+	public String register_memo( @RequestParam Map<String,Object> map) {
 		
-		//System.out.println(map);
 		timetableService.insert_memo(map);
-		
+	
 		return "success";
 	}
 	
+	//마지막 메모 등록하기
+	@RequestMapping(value="/recent_memo")
+	@ResponseBody
+	public List<Map<String, Object>> recent_memo( @RequestParam Map<String,Object> map) {
+		
+		List<Map<String, Object>> lmemo = timetableService.select_lMemo(map);
+		System.out.println("마지막 메모:"+lmemo);
+		return lmemo;
+	}
+
+
 	//시간표에 메모 보여주기
 	@RequestMapping(value="/show_memo")
 	@ResponseBody
 	public List<Map<String, Object>> show_memo(@RequestParam String lecture) {
-		//System.out.println(lecture);
+		
 		List<Map<String, Object>> memos = timetableService.selectMemo(lecture);
-		//System.out.println(memos);
 		
 		return memos;
 	}
@@ -63,7 +71,6 @@ public class HomeController {
 	public List<Map<String, Object>> show_pop(@RequestParam String lecture) {
 		
 		List<Map<String, Object>> total = timetableService.selectTotal(lecture);
-		//System.out.println(total);
 		
 		return total;
 		
@@ -74,8 +81,8 @@ public class HomeController {
 	@ResponseBody
 	public String delete_memo(@RequestParam Map<String,Object> map) {
 		
-		//System.out.println(map);
 		timetableService.deleteMemo(map);
+		System.out.println("삭제:"+map);
 		return "success";
 		
 	}
@@ -85,9 +92,8 @@ public class HomeController {
 	@ResponseBody
 	public List<Map<String, Object>> search(@RequestParam String search_text) {
 		
-		//System.out.println(search_text);
 		List<Map<String, Object>> s_list = timetableService.selectSearch(search_text);
-		//System.out.println(s_list);
+		
 		return s_list;
 		
 	}

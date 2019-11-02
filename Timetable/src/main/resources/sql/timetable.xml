@@ -20,29 +20,39 @@
 	
 	<!-- 메모등록하기 -->
 	<insert id="insert_memo" parameterType="map">
-		INSERT INTO MEMO (LECTURE, TITLE, CONTENT)
-		VALUES (#{lecture} , #{title}, #{content})
+		INSERT INTO MEMO (NO,LECTURE, TITLE, CONTENT)
+		VALUES (NULL,#{lecture} , #{title}, #{content})
 	</insert>
 	
 	<!-- 메모 불러오기 -->
 	<select id="selectMemo" resultType="map" parameterType="String">
-		SELECT LECTURE,TITLE,CONTENT
+		SELECT NO,LECTURE,TITLE,CONTENT
 		FROM MEMO
 		WHERE LECTURE = #{value}
+	</select>
+	
+	<!-- 마지막 등록한 메모 불러오기 -->
+	<select id="select_lMemo" resultType="map" parameterType="String">
+		SELECT NO,LECTURE,TITLE,CONTENT
+		FROM MEMO
+		WHERE LECTURE = #{lecture}
+		ORDER BY NO DESC
+		LIMIT 1
 	</select>
 	
 	<!-- 메모 삭제하기 -->
 	<delete id="deleteMemo" parameterType="map">
 		DELETE FROM MEMO 
-		WHERE LECTURE=#{lecture}
+		WHERE NO=#{no}
+		AND LECTURE=#{lecture}
 		AND TITLE = #{title}
 		AND CONTENT = #{content}
 	</delete>
 	
-	<!-- 전체 정보 불러오기 -->
+	<!-- 클릭한 강의 전체 정보 불러오기 -->
 	<select id="selectTotal" resultType="map" parameterType="String">
 		SELECT c.CODE, c.LECTURE, c.PROFESSOR, c.START_TIME, c.END_TIME, c.DAYOFWEEK
-		     , m.LECTURE, m.TITLE, m.CONTENT
+		     ,m.NO, m.LECTURE, m.TITLE, m.CONTENT
 		FROM COURSE c
 		LEFT JOIN MEMO m
 		   	 ON c.LECTURE = m.LECTURE
